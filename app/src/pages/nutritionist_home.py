@@ -20,7 +20,7 @@ client_id = st.text_input("Enter Client ID to view health & nutrition data:", "1
 BASE_URL = "http://localhost:4000"
 
 if st.button("Load Client Data"):
-    # ----------------- Meal Plans -----------------
+    # Meal Plans 
     meal_res = requests.get(f"{BASE_URL}/meal-plans/{client_id}")
     if meal_res.ok:
         st.subheader("📋 Meal Plans")
@@ -29,14 +29,14 @@ if st.button("Load Client Data"):
     else:
         st.error("Could not fetch meal plans.")
 
-    # ----------------- Meal Logs ------------------
+    # Meal Logs 
     logs_res = requests.get(f"{BASE_URL}/meals_logs/{client_id}")
     if logs_res.ok:
         st.subheader("📊 Meal Logs")
         meal_logs_df = pd.DataFrame(logs_res.json())
         st.dataframe(meal_logs_df)
 
-        # --------- Add Simple Graph (Calories Over Time) ---------
+        # Calories Over Time
         if 'Time' in meal_logs_df.columns and 'Calories' in meal_logs_df.columns:
             meal_logs_df['Time'] = pd.to_datetime(meal_logs_df['Time'])
             fig = px.line(meal_logs_df, x='Time', y='Calories', title='Calories Logged Over Time')
@@ -44,7 +44,7 @@ if st.button("Load Client Data"):
     else:
         st.error("Could not fetch meal logs.")
 
-    # ----------------- Restrictions ------------------
+    # Restrictions
     rest_res = requests.get(f"{BASE_URL}/restrictions/{client_id}")
     if rest_res.ok:
         st.subheader("🚫 Dietary Restrictions")
@@ -52,7 +52,7 @@ if st.button("Load Client Data"):
     else:
         st.error("Could not fetch restrictions.")
 
-    # ----------------- Educational Content ------------------
+    # Educational Content 
     edu_res = requests.get(f"{BASE_URL}/educational-content/{client_id}")
     if edu_res.ok:
         st.subheader("📚 Educational Resources")
